@@ -1,0 +1,21 @@
+{
+    "version": "v20230223",
+    "date": "1677191309",
+    "variants": [
+        {
+            "name": "slim",
+            "size": 3353968640,
+            "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230223/AlphaDroid_A13-arm64-bgS-slim_20230223.img.xz"
+        }
+        {
+            "name": "ro-slim",
+            "size": 2741977088,
+            "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230223/AlphaDroid_A13-RO-arm64-bgN-slim_20230223.img.xz"
+        }
+        {
+            "name": "slim-lite",
+            "size": 3222421504,
+            "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230223/AlphaDroid_A13-arm64-bgS-slim-lite_20230223.img.xz"
+        }
+    ]
+}
