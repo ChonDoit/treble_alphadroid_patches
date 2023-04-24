@@ -1,0 +1,81 @@
+From 2299656e1bab87ff7adf32950dc0630ac994c77a Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Thu, 16 Mar 2023 15:54:00 +0000
+Subject: [PATCH] Config changos
+
+---
+ config/alpha.mk         | 2 +-
+ config/common_mobile.mk | 2 --
+ config/phh_gsi.mk       | 32 ++++++++++++++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 3 deletions(-)
+ create mode 100644 config/phh_gsi.mk
+ 
+diff --git a/config/alpha.mk b/config/alpha.mk
+index 49da04b5..e8503b42 100644
+--- a/config/alpha.mk
++++ b/config/alpha.mk
+@@ -15,7 +15,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
+     pm.dexopt.boot=verify \
+     pm.dexopt.first-boot=quicken \
+     pm.dexopt.install=speed-profile \
+-    pm.dexopt.bg-dexopt=everything
++    pm.dexopt.bg-dexopt=speed-profile
+ 
+ # Privapp-permissions whitelist mode
+ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+diff --git a/config/common_mobile.mk b/config/common_mobile.mk
+index d1ceabbe..4e402314 100644
+--- a/config/common_mobile.mk
++++ b/config/common_mobile.mk
+@@ -16,10 +16,8 @@ PRODUCT_PRODUCT_PROPERTIES += \
+ PRODUCT_PACKAGES += \
+     Aperture \
+     Backgrounds \
+-    Eleven \
+     Etar \
+     ExactCalculator \
+-    Jelly \
+     Profiles \
+     Seedvault \
+     ThemePicker
+diff --git a/config/phh_gsi.mk b/config/phh_gsi.mk
+new file mode 100644
+index 00000000..6fa75fa3
+--- /dev/null
++++ b/config/phh_gsi.mk
+@@ -0,0 +1,32 @@
++# The Gapps
++$(call inherit-product, vendor/gapps/config.mk)
++WITH_FULL_THEGAPPS := false
++
++# Don't Build Kernel
++TARGET_NO_KERNEL := true
++
++# Shared Block (RO)
++PHH-SECURE_BUILD := false
++BOARD_EXT4_SHARE_DUP_BLOCKS := false
++
++# Use CCache
++USE_CCACHE := true
++
++# Build APN
++PRODUCT_PACKAGES += apns-conf.xml
++
++# Set Build Variant prop for OTA
++ifeq ($(WITH_FULL_THEGAPPS), true)
++    PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.phh.buildvariant=ro-secure
++        else ifeq ($(BOARD_EXT4_SHARE_DUP_BLOCKS), true)
++    PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.phh.buildvariant=ro-slim-secure
++        else
++    PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.phh.buildvariant=slim
++endif
++
++PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
++    persist.sys.binary_xml=false \
++    dalvik.vm.dex2oat64.enabled=true \
++    persist.sys.phh.dynamic_superuser=0 \
++    persist.sys.dexpreopt.performed=0 \
++    ro.system.ota.json_url=https://github.com/ChonDoit/treble_alphadroid_patches/raw/13/ota.json
+-- 
+2.34.1
+
