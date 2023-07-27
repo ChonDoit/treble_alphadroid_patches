@@ -1,14 +1,18 @@
-From fa210350fdb97fd06205f0d5d9bba8cd452bce2c Mon Sep 17 00:00:00 2001
+From 66d4d7a5590baaccb0a3a418cdba4c51390ca42e Mon Sep 17 00:00:00 2001
 From: ChonDoit <thphantomblog@gmail.com>
 Date: Mon, 10 Oct 2022 05:08:58 +0000
 Subject: [PATCH] Add CCache Check to Environment Setup
 
+---
+ build/envsetup.sh | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
 diff --git a/build/envsetup.sh b/build/envsetup.sh
-index c5fe1828..64668a52 100644
+index d191211f..a7ebefa5 100644
 --- a/build/envsetup.sh
 +++ b/build/envsetup.sh
-@@ -954,6 +954,23 @@ function fixup_common_out_dir() {
-     fi
+@@ -978,6 +978,23 @@ function setbuildtype() {
+     export GAPPS_BUILD_TYPE=$buildtype
  }
  
 +# Check and set ccache path on envsetup
@@ -31,7 +35,6 @@ index c5fe1828..64668a52 100644
  export SKIP_ABI_CHECKS=true
  
  # Override host metadata to make builds more reproducible and avoid leaking info
-
 -- 
 2.34.1
 

@@ -1,7 +1,7 @@
-From 6b5f820ad33a8127698f65e36fd8ad34d0d73b0b Mon Sep 17 00:00:00 2001
+From 1fc83a21a0c37fa2a08a2136bfa7fc482b03fabd Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 18 Dec 2022 18:17:30 -0500
-Subject: [PATCH 9/9] FOD support for Samsung and Asus
+Subject: [PATCH] FOD support for Samsung and Asus
 
 ---
  libs/gui/BLASTBufferQueue.cpp                 | 20 ++++++++++++++--
@@ -20,16 +20,18 @@ Subject: [PATCH 9/9] FOD support for Samsung and Asus
  13 files changed, 77 insertions(+), 5 deletions(-)
 
 diff --git a/libs/gui/BLASTBufferQueue.cpp b/libs/gui/BLASTBufferQueue.cpp
-index a51bbb1553..81f2de0025 100644
+index f674ad5282..ed81aeb23d 100644
 --- a/libs/gui/BLASTBufferQueue.cpp
 +++ b/libs/gui/BLASTBufferQueue.cpp
-@@ -33,11 +33,20 @@
+@@ -33,6 +33,7 @@
  #include <utils/Trace.h>
  
  #include <private/gui/ComposerService.h>
 +#include <cutils/properties.h>
  
- #include <chrono>
+ #include <binder/IServiceManager.h>
+ #include <pthread.h>
+@@ -41,6 +42,14 @@
  
  using namespace std::chrono_literals;
  
@@ -44,7 +46,7 @@ index a51bbb1553..81f2de0025 100644
  namespace {
  inline const char* boolToString(bool b) {
      return b ? "true" : "false";
-@@ -147,9 +156,16 @@ BLASTBufferQueue::BLASTBufferQueue(const std::string& name, bool updateDestinati
+@@ -193,9 +202,16 @@ BLASTBufferQueue::BLASTBufferQueue(const std::string& name, bool updateDestinati
  
      // safe default, most producers are expected to override this
      mProducer->setMaxDequeuedBufferCount(2);
@@ -181,7 +183,7 @@ diff --git a/services/surfaceflinger/DisplayHardware/AidlComposerHal.h b/service
 index 18d2242c7e..8ebca826a4 100644
 --- a/services/surfaceflinger/DisplayHardware/AidlComposerHal.h
 +++ b/services/surfaceflinger/DisplayHardware/AidlComposerHal.h
-@@ -227,6 +227,8 @@ public:
+@@ -227,6 +227,8 @@ class AidlComposer final : public Hwc2::Composer {
      Error getPhysicalDisplayOrientation(Display displayId,
                                          AidlTransform* outDisplayOrientation) override;
  
@@ -194,7 +196,7 @@ diff --git a/services/surfaceflinger/DisplayHardware/ComposerHal.h b/services/su
 index d266d942fb..b81d01e6d8 100644
 --- a/services/surfaceflinger/DisplayHardware/ComposerHal.h
 +++ b/services/surfaceflinger/DisplayHardware/ComposerHal.h
-@@ -281,6 +281,9 @@ public:
+@@ -281,6 +281,9 @@ class Composer {
      virtual Error setIdleTimerEnabled(Display displayId, std::chrono::milliseconds timeout) = 0;
      virtual Error getPhysicalDisplayOrientation(Display displayId,
                                                  AidlTransform* outDisplayOrientation) = 0;
@@ -227,7 +229,7 @@ diff --git a/services/surfaceflinger/DisplayHardware/HWC2.h b/services/surfacefl
 index 24aef9b73c..138d14456c 100644
 --- a/services/surfaceflinger/DisplayHardware/HWC2.h
 +++ b/services/surfaceflinger/DisplayHardware/HWC2.h
-@@ -333,6 +333,9 @@ public:
+@@ -333,6 +333,9 @@ class Layer {
      // AIDL HAL
      [[nodiscard]] virtual hal::Error setBrightness(float brightness) = 0;
      [[nodiscard]] virtual hal::Error setBlockingRegion(const android::Region& region) = 0;
@@ -237,7 +239,7 @@ index 24aef9b73c..138d14456c 100644
  };
  
  namespace impl {
-@@ -382,6 +385,8 @@ public:
+@@ -382,6 +385,8 @@ class Layer : public HWC2::Layer {
      hal::Error setBrightness(float brightness) override;
      hal::Error setBlockingRegion(const android::Region& region) override;
  
@@ -268,7 +270,7 @@ diff --git a/services/surfaceflinger/DisplayHardware/HidlComposerHal.h b/service
 index d0d3c2e6d7..c40986fae9 100644
 --- a/services/surfaceflinger/DisplayHardware/HidlComposerHal.h
 +++ b/services/surfaceflinger/DisplayHardware/HidlComposerHal.h
-@@ -338,6 +338,8 @@ public:
+@@ -338,6 +338,8 @@ class HidlComposer final : public Composer {
      Error getPhysicalDisplayOrientation(Display displayId,
                                          AidlTransform* outDisplayOrientation) override;
  
@@ -277,6 +279,3 @@ index d0d3c2e6d7..c40986fae9 100644
  private:
      class CommandWriter : public CommandWriterBase {
      public:
--- 
-2.25.1
-

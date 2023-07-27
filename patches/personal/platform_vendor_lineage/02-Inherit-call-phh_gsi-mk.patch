@@ -4,16 +4,16 @@ Date: Mon, 17 Apr 2023 17:39:25 +0000
 Subject: [PATCH] Inherit call phh_gsi.mk
 
 ---
- config/common.mk | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ config/common.mk | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/config/common.mk b/config/common.mk
-index eb59259e..9cacdfb5 100644
+index 7d1715f1..48740994 100644
 --- a/config/common.mk
 +++ b/config/common.mk
-@@ -5,6 +5,22 @@ $(call inherit-product-if-exists, vendor/lineage/config/alpha.mk)
- $(call inherit-product-if-exists, vendor/addons/config.mk)
- $(call inherit-product-if-exists, external/faceunlock/config.mk)
+@@ -7,6 +7,22 @@ $(call inherit-product-if-exists, external/faceunlock/config.mk)
+ 
+ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
  
 +# PHH GSI
 +$(call inherit-product, vendor/lineage/config/phh_gsi.mk)
@@ -31,27 +31,9 @@ index eb59259e..9cacdfb5 100644
 +TARGET_FACE_UNLOCK_SUPPORTED := true
 +ALPHA_MAINTAINER := ChonDoe
 +
- PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
- 
  ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
-@@ -15,17 +31,6 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-     ro.com.google.clientidbase=$(PRODUCT_GMS_CLIENTID_BASE)
- endif
- 
--ifeq ($(TARGET_BUILD_VARIANT),eng)
--# Disable ADB authentication
--PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
--else
--# Enable ADB authentication
--PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=1
--
--# Disable extra StrictMode features on all non-engineering builds
--PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.strictmode.disable=true
--endif
--
- # Backup Tool
- PRODUCT_COPY_FILES += \
-     vendor/lineage/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
+ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+     ro.com.google.clientidbase=android-google
 -- 
 2.34.1
 

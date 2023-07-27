@@ -1,0 +1,41 @@
+From 2299656e1bab87ff7adf32950dc0630ac994c77a Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Thu, 16 Mar 2023 15:54:00 +0000
+Subject: [PATCH] Miscellaneous changes
+
+---
+ config/alpha.mk         | 2 +-
+ config/common_mobile.mk | 2 --
+ 2 files changed, 1 insertions(+), 3 deletions(-)
+ 
+diff --git a/config/alpha.mk b/config/alpha.mk
+index 49da04b5..e8503b42 100644
+--- a/config/alpha.mk
++++ b/config/alpha.mk
+@@ -15,7 +15,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
+     pm.dexopt.boot=verify \
+     pm.dexopt.first-boot=quicken \
+     pm.dexopt.install=speed-profile \
+-    pm.dexopt.bg-dexopt=everything
++    pm.dexopt.bg-dexopt=speed-profile
+ 
+ # Privapp-permissions whitelist mode
+ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+diff --git a/config/common_mobile.mk b/config/common_mobile.mk
+index aa937c4d..49e5a903 100644
+--- a/config/common_mobile.mk
++++ b/config/common_mobile.mk
+@@ -15,10 +15,8 @@ PRODUCT_PRODUCT_PROPERTIES += \
+ # Apps
+ PRODUCT_PACKAGES += \
+     Aperture \
+-    Eleven \
+     Etar \
+     ExactCalculator \
+-    Jelly \
+     Profiles \
+     Seedvault
+ 
+-- 
+2.34.1
+

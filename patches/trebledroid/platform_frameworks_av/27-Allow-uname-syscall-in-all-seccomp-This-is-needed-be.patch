@@ -1,9 +1,9 @@
-From b8303fd493873749e5e7ff66e9a992094a816564 Mon Sep 17 00:00:00 2001
+From 4a88b501c66093bedfe65b6d1135132ac091d83a Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 29 Mar 2023 16:53:18 -0400
-Subject: [PATCH 27/27] Allow uname syscall in all seccomp -- This is needed
- because of the getCallingSid change in fw/n libbinder
+Subject: [PATCH] Allow uname syscall in all seccomp
 
+This is needed because of the getCallingSid change in fw/n libbinder
 ---
  services/mediacodec/seccomp_policy/mediacodec-arm.policy        | 2 ++
  services/mediacodec/seccomp_policy/mediacodec-arm64.policy      | 2 ++
@@ -164,5 +164,5 @@ index 51df1a238d..6846c01d0e 100644
  @include /apex/com.android.media/etc/seccomp_policy/crash_dump.x86_64.policy
  @include /apex/com.android.media/etc/seccomp_policy/code_coverage.x86_64.policy
 -- 
-2.25.1
+2.34.1
 
