@@ -1,0 +1,33 @@
+From e13780c69a1c8e9685846926cdbbc1c4e736d4b1 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Sat, 4 Mar 2023 12:26:29 +0000
+Subject: [PATCH] Remove more unnecessary things
+
+Alredy have thems on my own gapps tree
+---
+ config.mk | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/config.mk b/config.mk
+index d493b41b..4b89812f 100644
+--- a/config.mk
++++ b/config.mk
+@@ -30,15 +30,6 @@ PRODUCT_PACKAGES += \
+     UdfpsPressedIcons
+ endif
+- 
+-PRODUCT_COPY_FILES += \
+-    vendor/addons/prebuilt/product/etc/sysconfig/dialer_experience.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/dialer_experience.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/google.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/google.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/google_build.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/google_build.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/google_exclusives_enable.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/google_exclusives_enable.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/google-hiddenapi-package-whitelist.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/google-hiddenapi-package-whitelist.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/nexus.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/nexus.xml \
+-    vendor/addons/prebuilt/product/etc/sysconfig/pixel_2016_exclusive.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/pixel_2016_exclusive.xml
+ 
+ # Fonts
+ PRODUCT_PACKAGES += \
+     fonts_customization.xml \
+-- 
+2.34.1
+

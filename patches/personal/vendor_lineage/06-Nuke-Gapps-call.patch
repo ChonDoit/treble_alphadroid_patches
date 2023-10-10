@@ -1,0 +1,31 @@
+From 385943b7990027bd7df9a45e75b4bee252c8bf1d Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Thu, 27 Jul 2023 20:55:17 +0000
+Subject: [PATCH] Nuke Gapps call
+
+I use my own tree
+
+---
+ config/version.mk | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/config/version.mk b/config/version.mk
+index 128782ca..584e3926 100644
+--- a/config/version.mk
++++ b/config/version.mk
+@@ -17,12 +17,6 @@ PRODUCT_COPY_FILES += \
+ endif
+ 
+ WITH_GMS ?= $(WITH_GAPPS)
+-ifeq ($(WITH_GMS), true)
+-  ALPHA_BUILD_PACKAGE := gapps
+-  $(call inherit-product, vendor/gms/setup.mk)
+-  ifeq ($(TARGET_INCLUDE_PIXEL_FRAMEWORK), true)
+-    $(call inherit-product-if-exists, vendor/pixel-framework/config.mk)
+-  endif
+ else
+   ALPHA_BUILD_PACKAGE := vanilla
+ endif
+-- 
+2.34.1
+

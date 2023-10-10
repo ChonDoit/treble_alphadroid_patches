@@ -1,28 +1,33 @@
 {
-  "version": "v20230727",
-  "date": "1690467037",
+  "version": "v20231009",
+  "date": "1696888469",
   "gsi": "AlphaDroid | by ChonDoe feat. TD",
   "changelog": "https://raw.githubusercontent.com/ChonDoit/treble_alphadroid_patches/13/changelog.txt",
   "variants": [
     {
       "name": "Slim",
       "size": "1304885316",
-      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bgS-slim_20230727.img.xz"
+      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bgS-slim_20231009.img.xz"
     },
     {
       "name": "Slim-VNDK-Lite",
       "size": "1248463352",
-      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bgS-slim-lite_20230727.img.xz"
+      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bgS-slim-vndklite_20231009.img.xz"
     },
     {
       "name": "Slim-Secure",
       "size": "1155545660",
-      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-RO-arm64-bgN-slim_20230727.img.xz"
-    }
+      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-RO-arm64-bgN-slim_20231009.img.xz"
+    },
     {
       "name": "Vanilla",
       "size": "1116042680",
-      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bvS_20230727.img.xz"
+      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bvS_20231009.img.xz"
+    },
+    {
+      "name": "Vanilla-VNDK-Lite",
+      "size": "1016042680",
+      "url": "https://github.com/ChonDoit/treble_alphadroid_patches/releases/download/A13-v20230726/AlphaDroid_A13-arm64-bvS-vndklite_20231009.img.xz"
     }
   ]
 }

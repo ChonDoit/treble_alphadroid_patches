@@ -1,0 +1,170 @@
+From 24e8ef75bb69001ec810558f7c505ea4ffea5ec1 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Mon, 28 Aug 2023 17:12:33 +0000
+Subject: [PATCH] Revert "Seekbar for left/right status bar paddings [1/2]"
+
+This reverts commit 08d31f58074499a4e9bfa2c97bf03308c21fb1cf.
+---
+ core/java/android/provider/Settings.java      | 21 ------
+ .../statusbar/phone/PhoneStatusBarView.java   | 67 ++++---------------
+ 2 files changed, 13 insertions(+), 75 deletions(-)
+
+diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
+index 3312b9fc4731..f9f2c4859054 100644
+--- a/core/java/android/provider/Settings.java
++++ b/core/java/android/provider/Settings.java
+@@ -6502,24 +6502,6 @@ public final class Settings {
+          */
+         public static final String MAX_VISIBLE_NOTIFICATION_ICONS = "max_visible_notification_icons";
+ 
+-        /**
+-         * Whether to add left padding on statusbar
+-         * @hide
+-         */
+-        public static final String STATUSBAR_LEFT_PADDING = "statusbar_left_padding";
+-
+-        /**
+-         * Whether to add right padding on statusbar
+-         * @hide
+-         */
+-        public static final String STATUSBAR_RIGHT_PADDING = "statusbar_right_padding";
+-
+-        /**
+-         * Whether to add top padding on statusbar
+-         * @hide
+-         */
+-        public static final String STATUSBAR_TOP_PADDING = "statusbar_top_padding";
+-
+         /**
+          * Whether to show/hide text percentage view on brightness bar
+          * @hide
+@@ -6636,9 +6618,6 @@ public final class Settings {
+             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE_VENDOR_HINT);
+             PRIVATE_SETTINGS.add(DESKTOP_MODE);
+             PRIVATE_SETTINGS.add(MAX_VISIBLE_NOTIFICATION_ICONS);
+-            PRIVATE_SETTINGS.add(STATUSBAR_LEFT_PADDING);
+-            PRIVATE_SETTINGS.add(STATUSBAR_RIGHT_PADDING);
+-            PRIVATE_SETTINGS.add(STATUSBAR_TOP_PADDING);
+             PRIVATE_SETTINGS.add(AMBIENT_TEXT_COLOR);
+             PRIVATE_SETTINGS.add(AMBIENT_TEXT_TYPE_COLOR);
+             PRIVATE_SETTINGS.add(QS_HAPTIC_FEEDBACK);
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 726da71e1dac..6a9d48879caa 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -30,8 +30,6 @@ import android.util.Log;
+ import android.util.Pair;
+ import android.view.ContextThemeWrapper;
+ import android.view.Display;
+-import android.provider.Settings;
+-import android.util.TypedValue;
+ import android.view.DisplayCutout;
+ import android.view.IWindowManager;
+ import android.view.MotionEvent;
+@@ -57,30 +55,17 @@ import com.android.systemui.statusbar.CommandQueue;
+ import com.android.systemui.statusbar.CommandQueue.Callbacks;
+ import com.android.systemui.statusbar.phone.userswitcher.StatusBarUserSwitcherContainer;
+ import com.android.systemui.statusbar.policy.Offset;
+-import com.android.systemui.tuner.TunerService;
+ import com.android.systemui.user.ui.binder.StatusBarUserChipViewBinder;
+ import com.android.systemui.user.ui.viewmodel.StatusBarUserChipViewModel;
+ import com.android.systemui.util.leak.RotationUtils;
+ 
+ import java.util.Objects;
+ 
+-public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerService.Tunable {
++public class PhoneStatusBarView extends FrameLayout implements Callbacks {
+     private static final String TAG = "PhoneStatusBarView";
+     private final CommandQueue mCommandQueue;
+     private final StatusBarContentInsetsProvider mContentInsetsProvider;
+ 
+-    private static final String LEFT_PADDING =
+-            "system:" + Settings.System.STATUSBAR_LEFT_PADDING;
+-    private static final String RIGHT_PADDING =
+-            "system:" + Settings.System.STATUSBAR_RIGHT_PADDING;
+-    private static final String TOP_PADDING =
+-            "system:" + Settings.System.STATUSBAR_TOP_PADDING;
+-
+-    private int mBasePaddingBottom;
+-    private int mLeftPad;
+-    private int mRightPad;
+-    private int mTopPad;
+-
+     private DarkReceiver mBattery;
+     private int mRotationOrientation = -1;
+     private RotationButtonController mRotationButtonController;
+@@ -176,9 +161,6 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
+         mCutoutSpace = findViewById(R.id.cutout_space_view);
+         mStatusBarContents = (ViewGroup) findViewById(R.id.status_bar_contents);
+ 
+-        Dependency.get(TunerService.class).addTunable(this, LEFT_PADDING);
+-        Dependency.get(TunerService.class).addTunable(this, RIGHT_PADDING);
+-        Dependency.get(TunerService.class).addTunable(this, TOP_PADDING);
+         updateResources();
+     }
+ 
+@@ -314,15 +296,21 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
+         mStatusBarHeight = SystemBarUtils.getStatusBarHeight(mContext);
+         layoutParams.height = mStatusBarHeight - waterfallTopInset;
+ 
+-        View sbContents = findViewById(R.id.status_bar_contents);
+-        sbContents.setPaddingRelative(
+-                (int) mLeftPad,
+-                (int) mTopPad,
+-                (int) mRightPad,
++        int statusBarPaddingTop = getResources().getDimensionPixelSize(
++                R.dimen.status_bar_padding_top);
++        int statusBarPaddingStart = getResources().getDimensionPixelSize(
++                R.dimen.status_bar_padding_start);
++        int statusBarPaddingEnd = getResources().getDimensionPixelSize(
++                R.dimen.status_bar_padding_end);
++
++        mStatusBarContents.setPaddingRelative(
++                statusBarPaddingStart,
++                statusBarPaddingTop,
++                statusBarPaddingEnd,
+                 0);
+ 
+         findViewById(R.id.notification_lights_out)
+-                .setPaddingRelative(0, (int) mLeftPad, 0, 0);
++                .setPaddingRelative(0, statusBarPaddingStart, 0, 0);
+ 
+         setLayoutParams(layoutParams);
+     }
+@@ -375,33 +363,4 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
+         centeredAreaParams.rightMargin =
+                 winRotation == Surface.ROTATION_0 ? -insets.second : 0;
+     }
+-
+-    @Override
+-    public void onTuningChanged(String key, String newValue) {
+-        int statusBarPaddingStart = getResources().getDimensionPixelSize(
+-                R.dimen.status_bar_padding_start);
+-        int statusBarPaddingEnd = getResources().getDimensionPixelSize(
+-                R.dimen.status_bar_padding_end);
+-        int statusBarPaddingTop = getResources().getDimensionPixelSize(
+-                R.dimen.status_bar_padding_top);
+-        if (LEFT_PADDING.equals(key)) {
+-            int mLPadding = TunerService.parseInteger(newValue, statusBarPaddingStart);
+-            mLeftPad = Math.round(TypedValue.applyDimension(
+-                TypedValue.COMPLEX_UNIT_DIP, mLPadding,
+-                getResources().getDisplayMetrics()));
+-            updateStatusBarHeight();
+-        } else if (RIGHT_PADDING.equals(key)) {
+-            int mRPadding = TunerService.parseInteger(newValue, statusBarPaddingEnd);
+-            mRightPad = Math.round(TypedValue.applyDimension(
+-                TypedValue.COMPLEX_UNIT_DIP, mRPadding,
+-                getResources().getDisplayMetrics()));
+-            updateStatusBarHeight();
+-        } else if (TOP_PADDING.equals(key)) {
+-            int mTPadding = TunerService.parseInteger(newValue, statusBarPaddingTop);
+-            mTopPad = Math.round(TypedValue.applyDimension(
+-                TypedValue.COMPLEX_UNIT_DIP, mTPadding,
+-                getResources().getDisplayMetrics()));
+-            updateStatusBarHeight();
+-        }
+-    }
+ }
+-- 
+2.34.1
+
